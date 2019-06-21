@@ -1,0 +1,21 @@
+{
+  "name": "nats-worker",
+  "version": "1.0.0",
+  "description": "Worker",
+  "main": "src/index.js",
+  "keywords": [
+    "nats"
+  ],
+  "author": "Thiago Lagden",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon src/stream.js"
+  },
+  "dependencies": {
+    "debug": "4.1.1",
+    "node-nats-streaming": "0.2.2"
+  },
+  "devDependencies": {
+    "nodemon": "1.19.1"
+  }
+}

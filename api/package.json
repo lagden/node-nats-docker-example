@@ -1,0 +1,24 @@
+{
+  "name": "nats-api",
+  "version": "1.0.0",
+  "description": "API",
+  "main": "src/index.js",
+  "keywords": [
+    "nats"
+  ],
+  "author": "Thiago Lagden",
+  "license": "MIT",
+  "scripts": {
+    "start": "nodemon src/index.js"
+  },
+  "dependencies": {
+    "debug": "4.1.1",
+    "koa-app-base": "3.8.0",
+    "koa-compose": "4.1.0",
+    "koa-router": "7.4.0",
+    "node-nats-streaming": "0.2.2"
+  },
+  "devDependencies": {
+    "nodemon": "1.19.1"
+  }
+}

@@ -1,0 +1,62 @@
+#!/bin/bash
+
+abort() {
+	printf "\n  \033[31mError: $@\033[0m\n\n" && exit 1
+}
+
+usage() {
+	cat <<-EOF
+
+  Usage: $0 [-bd] [-s <service>]
+
+  Options:
+    -b   Build image
+    -d   Run containers in the background
+    -s   Docker compose service name
+    -h   Show usage
+
+EOF
+exit 0
+}
+
+DIR="$( cd -P "$( dirname "$0" )" && pwd )"
+cd $DIR
+cd ..
+
+CURR_FOLDER=`pwd`
+BUILD=""
+DAEMON="--abort-on-container-exit"
+OPT="development"
+SERVICE=""
+COMPOSE="${CURR_FOLDER}/docker-compose.yml"
+
+while getopts ":bds:" o
+do
+	case ${o} in
+		b) BUILD="--build" ;;
+		d) DAEMON="-d" ;;
+		s) SERVICE=$OPTARG ;;
+		*) usage ;;
+	esac
+done
+
+# ENV File
+ENVFILE="${CURR_FOLDER}/.env-${OPT}"
+if test ! -e $ENVFILE; then
+	abort "Environment file not found"
+fi
+
+set -a
+source $ENVFILE
+
+docker-compose \
+	-f $COMPOSE \
+	up \
+	--force-recreate \
+	--always-recreate-deps \
+	--remove-orphans \
+	$BUILD \
+	$DAEMON \
+	$SERVICE
+
+exit 0
