@@ -9,7 +9,7 @@
   "author": "Thiago Lagden",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon src/stream.js"
+    "start": "bin/await && nodemon src/stream.js"
   },
   "dependencies": {
     "debug": "4.1.1",

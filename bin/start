@@ -29,6 +29,7 @@ DAEMON="--abort-on-container-exit"
 OPT="development"
 SERVICE=""
 COMPOSE="${CURR_FOLDER}/docker-compose.yml"
+COMPOSE_TEMPLATE="${CURR_FOLDER}/docker-compose.template.yml"
 
 while getopts ":bds:" o
 do
@@ -48,6 +49,8 @@ fi
 
 set -a
 source $ENVFILE
+
+envsubst < $COMPOSE_TEMPLATE > $COMPOSE
 
 docker-compose \
 	-f $COMPOSE \

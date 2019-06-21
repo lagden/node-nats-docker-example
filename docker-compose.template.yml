@@ -5,9 +5,6 @@ services:
     command: >
       -cluster nats://0.0.0.0:6222
       -routes nats://nats_1:6222,nats://nats_2:6222,nats://nats_3:6222
-    ports:
-      - "18222:8222"
-      - "14222:4222"
     networks:
       - net
 
@@ -38,6 +35,9 @@ services:
       -store file -dir store -clustered -cluster_id nats_lab -cluster_node_id node_1
       -cluster_peers node_1,node_2,node_3
       -nats_server nats://nats_1:4222,nats://nats_2:4222,nats://nats_3:4222
+    ports:
+      - 14222:4222
+      - 18222:8222
     networks:
       - net
     depends_on:
@@ -51,6 +51,9 @@ services:
       -store file -dir store -clustered -cluster_id nats_lab -cluster_node_id node_2
       -cluster_peers node_1,node_2,node_3
       -nats_server nats://nats_1:4222,nats://nats_2:4222,nats://nats_3:4222
+    ports:
+      - 24222:4222
+      - 28222:8222
     networks:
       - net
     depends_on:
@@ -64,6 +67,9 @@ services:
       -store file -dir store -clustered -cluster_id nats_lab -cluster_node_id node_2
       -cluster_peers node_1,node_2,node_3
       -nats_server nats://nats_1:4222,nats://nats_2:4222,nats://nats_3:4222
+    ports:
+      - 34222:4222
+      - 38222:8222
     networks:
       - net
     depends_on:
@@ -75,20 +81,20 @@ services:
     build:
       context: ./api
       args:
-        NODE_ENV: development
-        PORT: 3000
+        NODE_ENV: ${ENV}
+        PORT: ${PORT}
     command: ["npm", "start"]
     environment:
-      - NODE_ENV=development
-      - PORT=3000
-      - DEBUG_COLORS=1
-      - DEBUG=nats:*
-      - NATS_CONN=nats://nats_1:4222, nats://nats_2:4222, nats://nats_3:4222
+      - NODE_ENV=${ENV}
+      - PORT=${PORT}
+      - DEBUG_COLORS=${DEBUG_COLORS}
+      - DEBUG=${DEBUG}
+      - NATS_CONN=${NATS_CONN}
     volumes:
       - ./api/src:/home/node/app/src
       - ./api/package.json:/home/node/app/package.json
     ports:
-      - 8080:3000
+      - ${PORT_PUBLISHED}:${PORT}
     networks:
       - net
 
@@ -96,24 +102,24 @@ services:
     build:
       context: ./worker
       args:
-        NODE_ENV: development
-        PORT: 3000
+        NODE_ENV: ${ENV}
+        PORT: ${PORT}
     command: ["npm", "start"]
     environment:
-      - NODE_ENV=development
-      - PORT=3000
-      - DEBUG_COLORS=1
-      - DEBUG=nats:*
-      - NATS_CONN=nats://nats_1:4222, nats://nats_2:4222, nats://nats_3:4222
+      - NODE_ENV=${ENV}
+      - PORT=${PORT}
+      - DEBUG_COLORS=${DEBUG_COLORS}
+      - DEBUG=${DEBUG}
+      - NATS_CONN=${NATS_CONN}
     volumes:
       - ./worker/bin:/home/node/app/bin
       - ./worker/src:/home/node/app/src
       - ./worker/package.json:/home/node/app/package.json
     ports:
-      - 8181:3000
+      - ${PORT_PUBLISHED_WORKER}:${PORT}
     networks:
       - net
 
 networks:
   net:
-    name: nats_development_net
+    name: ${AKA}_${ENV}_net

@@ -1,0 +1,27 @@
+#!/usr/bin/env node
+
+'use strict'
+
+const debug = require('../src/lib/debug')
+const sleep = require('../src/lib/sleep')
+const conn = require('../src/lib/conn')
+
+let cc = 0
+
+function _await() {
+	debug.log('esperando o NATS', cc++)
+	const stan = conn('nats_lab', 'wait_api')
+	stan
+		.on('connect', () => {
+			debug.log('connected')
+			stan.close()
+			process.exit()
+		})
+		.on('error', async error => {
+			debug.error(error.message)
+			await sleep(5)
+			_await()
+		})
+}
+
+_await()
