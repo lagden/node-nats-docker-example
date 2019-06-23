@@ -79,7 +79,8 @@ services:
         NODE_ENV: ${ENV}
         PORT: ${PORT}
     image: "${AKA}_api_lab:${VERSION}"
-    command: ["npm", "start"]
+    # command: ["npm", "start"]
+    command: ["node", "src/index.js"]
     environment:
       - NODE_ENV=${ENV}
       - PORT=${PORT}
@@ -100,7 +101,8 @@ services:
       args:
         NODE_ENV: ${ENV}
     image: "${AKA}_worker_lab:${VERSION}"
-    command: ["npm", "start"]
+    # command: ["npm", "start"]
+    command: ["node", "src/stream.js"]
     environment:
       - NODE_ENV=${ENV}
       - PORT=${PORT}
