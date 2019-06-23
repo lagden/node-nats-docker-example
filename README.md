@@ -56,6 +56,8 @@ $ curl 'http://[::1]:8080/pub/another_data'
 $ curl 'http://[::1]:8080/pub/more_data'
 ```
 
+<img width="1440" alt="Logs" src="https://user-images.githubusercontent.com/130963/59971380-74719080-9551-11e9-93cf-f494ed85d57e.png">
+
 
 ## Team
 
