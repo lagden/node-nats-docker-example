@@ -8,7 +8,7 @@
 
 Just an experiment with:
 
-- NATS Stream
+- [NATS](https://github.com/nats-io) [Stream](https://github.com/nats-io/stan.js)
 - API
 - Threads (Worker)
 
@@ -17,15 +17,15 @@ Just an experiment with:
 
 **Warning**
 
-The instructions below it's for who is using Docker + Docker Compose.
+The instructions below it's for who is using [Docker](https://docs.docker.com/) + [Docker Compose](https://docs.docker.com/compose/).
 
-To start the stack:
+To start (`-b` for build the images and `-d` for run in background):
 
 ```
 $ bin/start -b -d
 ```
 
-To stop the stack:
+To stop:
 
 ```
 $ bin/stop
