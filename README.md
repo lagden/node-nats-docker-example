@@ -6,20 +6,29 @@
 [xo]:                  https://github.com/sindresorhus/xo
 
 
-Apenas um experimento utilizando:
+Just an experiment with:
 
-- NATS
+- NATS Stream
 - API
-- Threads
-- Stream
+- Threads (Worker)
 
 
-## Uso
+## Usage
 
-Via Docker é mais fácil, basta executar:
+**Warning**
+
+The instructions below it's for who is using Docker + Docker Compose.
+
+To start the stack:
 
 ```
 $ bin/start -b -d
+```
+
+To stop the stack:
+
+```
+$ bin/stop
 ```
 
 

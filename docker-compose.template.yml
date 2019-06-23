@@ -3,8 +3,12 @@ services:
   nats_1:
     image: "nats:2.0.0-linux"
     command: >
+      -m 8222
       -cluster nats://0.0.0.0:6222
       -routes nats://nats_1:6222,nats://nats_2:6222,nats://nats_3:6222
+    ports:
+      - 4222:4222
+      - 8222:8222
     networks:
       - net
 
@@ -35,9 +39,6 @@ services:
       -store file -dir store -clustered -cluster_id nats_lab -cluster_node_id node_1
       -cluster_peers node_1,node_2,node_3
       -nats_server nats://nats_1:4222,nats://nats_2:4222,nats://nats_3:4222
-    ports:
-      - 14222:4222
-      - 18222:8222
     networks:
       - net
     depends_on:
@@ -51,9 +52,6 @@ services:
       -store file -dir store -clustered -cluster_id nats_lab -cluster_node_id node_2
       -cluster_peers node_1,node_2,node_3
       -nats_server nats://nats_1:4222,nats://nats_2:4222,nats://nats_3:4222
-    ports:
-      - 24222:4222
-      - 28222:8222
     networks:
       - net
     depends_on:
@@ -67,9 +65,6 @@ services:
       -store file -dir store -clustered -cluster_id nats_lab -cluster_node_id node_2
       -cluster_peers node_1,node_2,node_3
       -nats_server nats://nats_1:4222,nats://nats_2:4222,nats://nats_3:4222
-    ports:
-      - 34222:4222
-      - 38222:8222
     networks:
       - net
     depends_on:
@@ -103,7 +98,6 @@ services:
       context: ./worker
       args:
         NODE_ENV: ${ENV}
-        PORT: ${PORT}
     command: ["npm", "start"]
     environment:
       - NODE_ENV=${ENV}
@@ -115,8 +109,6 @@ services:
       - ./worker/bin:/home/node/app/bin
       - ./worker/src:/home/node/app/src
       - ./worker/package.json:/home/node/app/package.json
-    ports:
-      - ${PORT_PUBLISHED_WORKER}:${PORT}
     networks:
       - net
 

@@ -12,9 +12,9 @@ function _await() {
 	debug.log('esperando o NATS', cc++)
 	const stan = conn('nats_lab', 'wait_worker')
 	stan
-		.on('connect', () => {
+		.on('connect', sc => {
 			debug.log('connected')
-			stan.close()
+			sc.close()
 			process.exit()
 		})
 		.on('error', async error => {
