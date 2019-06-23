@@ -10,7 +10,7 @@
 
 function sleep(t = 1) {
 	return new Promise(resolve => {
-		let timeoutID = setTimeout(() => {
+		const timeoutID = setTimeout(() => {
 			clearTimeout(timeoutID)
 			resolve()
 		}, t * 1000)

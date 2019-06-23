@@ -17,5 +17,13 @@
   },
   "devDependencies": {
     "nodemon": "1.19.1"
+  },
+  "xo": {
+    "semicolon": false,
+    "rules": {
+      "capitalized-comments": 0,
+      "padding-line-between-statements": 0,
+      "brace-style": ["error", "1tbs", { "allowSingleLine": true }]
+    }
   }
 }

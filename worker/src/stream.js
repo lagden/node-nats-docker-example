@@ -31,11 +31,11 @@ stan
 					.catch(debug.error)
 			})
 			.on('error', error => {
-				debug.error(`subscription for nats raised an error: ${error}`);
+				debug.error(`subscription for nats raised an error: ${error}`)
 			})
 	})
-	.on('error', error => { debug.error(error); })
-	.on('disconnect', () => { debug.log('disconnect'); })
-	.on('reconnecting', () => { debug.log('reconnecting'); })
-	.on('reconnect', () => { debug.log('reconnect'); })
-	.on('close', () => { debug.log('close'); })
+	.on('error', error => { debug.error(error) })
+	.on('disconnect', () => { debug.log('disconnect') })
+	.on('reconnecting', () => { debug.log('reconnecting') })
+	.on('reconnect', () => { debug.log('reconnect') })
+	.on('close', () => { debug.log('close') })

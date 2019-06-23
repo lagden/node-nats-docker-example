@@ -1,0 +1,53 @@
+#!/bin/bash
+
+abort() {
+	printf "\n  \033[31mError: $@\033[0m\n\n" && exit 1
+}
+
+ok() {
+	printf "\n  \033[32mOk: $@\033[0m\n\n"
+}
+
+DIR="$( cd -P "$( dirname "$0" )" && pwd )"
+cd $DIR
+cd ..
+
+CURR_FOLDER=`pwd`
+OPT="development"
+COMPOSE="${CURR_FOLDER}/docker-compose.yml"
+COMPOSE_TEMPLATE="${CURR_FOLDER}/docker-compose.template.yml"
+BUILDS=(api worker)
+
+# ENV File
+ENVFILE="${CURR_FOLDER}/.env-${OPT}"
+if test ! -e $ENVFILE; then
+	abort "Environment file not found"
+fi
+
+set -a
+source $ENVFILE
+
+CC=0
+for build in "${BUILDS[@]}"
+do
+	GO_DIR="${CURR_FOLDER}/${build}"
+	if test -d $GO_DIR; then
+		## Go to dir
+		cd "${GO_DIR}"
+
+		ok "Building... --> ${build}"
+
+		## Variables
+		TAG_IMAGE_VERSION="${AKA}_${build}_lab:${VERSION}"
+
+		ok "Image VERSION    --> ${TAG_IMAGE_VERSION}"
+
+		# ## Build
+		docker build --compress --force-rm --no-cache . --tag $TAG_IMAGE_VERSION
+		test $? -ne 0 && abort "Falha no build da image --> ${build}" || ok "Build image ok --> ${build}"
+
+		CC=$((CC+1))
+	fi
+done
+
+exit 0

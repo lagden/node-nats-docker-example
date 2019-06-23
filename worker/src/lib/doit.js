@@ -4,10 +4,14 @@ const {workerData, parentPort} = require('worker_threads')
 const debug = require('./debug')
 const sleep = require('./sleep')
 
-;(async () => {
-	const {data, seq} = workerData
-	await sleep(3)
-	// some data processing...
-	const res = `modified ${data}`
-	parentPort.postMessage(`Data processed - ${seq}: ${res}`)
-})()
+const {data, seq} = workerData
+sleep(3)
+	.then(() => {
+		// some data processing...
+		const res = `modified ${data}`
+		parentPort.postMessage(`Data processed - ${seq}: ${res}`)
+	})
+	.catch(error => {
+		debug.error(error)
+		process.exit(1)
+	})

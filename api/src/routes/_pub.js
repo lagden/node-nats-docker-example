@@ -31,7 +31,7 @@ function pub(msg) {
 	})
 }
 
-async function middleware(ctx, next) {
+async function middleware(ctx) {
 	const {msg} = ctx.params
 	const ok = await pub(msg)
 	ctx.body = ok

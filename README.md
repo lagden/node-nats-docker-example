@@ -31,6 +31,31 @@ To stop the stack:
 $ bin/stop
 ```
 
+---
+
+It's possible run with `docker stack deploy`, but first is necessary generate the `docker-compose.yml` and `images`.
+
+```
+$ bin/gen
+$ bin/image
+$ docker stack deploy --prune --compose-file docker-compose.yml lab
+```
+
+Now, open the logs (each one in new shell) to know what is going on.
+
+```
+$ docker service logs -f lab_api
+$ docker service logs -f lab_worker
+```
+
+And make a call in the API, for example:
+
+```
+$ curl 'http://[::1]:8080/pub/some_data'
+$ curl 'http://[::1]:8080/pub/another_data'
+$ curl 'http://[::1]:8080/pub/more_data'
+```
+
 
 ## Team
 

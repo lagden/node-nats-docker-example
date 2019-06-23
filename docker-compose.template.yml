@@ -78,6 +78,7 @@ services:
       args:
         NODE_ENV: ${ENV}
         PORT: ${PORT}
+    image: "${AKA}_api_lab:${VERSION}"
     command: ["npm", "start"]
     environment:
       - NODE_ENV=${ENV}
@@ -98,6 +99,7 @@ services:
       context: ./worker
       args:
         NODE_ENV: ${ENV}
+    image: "${AKA}_worker_lab:${VERSION}"
     command: ["npm", "start"]
     environment:
       - NODE_ENV=${ENV}
