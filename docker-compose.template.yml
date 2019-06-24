@@ -79,8 +79,11 @@ services:
         NODE_ENV: ${ENV}
         PORT: ${PORT}
     image: "${AKA}_api_lab:${VERSION}"
-    # command: ["npm", "start"]
-    command: ["node", "src/index.js"]
+    command: >
+      /bin/ash -c "
+        bin/await nats_1:4222 nats_1:6222;
+        node src/index.js
+      "
     environment:
       - NODE_ENV=${ENV}
       - PORT=${PORT}
@@ -94,6 +97,9 @@ services:
       - ${PORT_PUBLISHED}:${PORT}
     networks:
       - net
+    depends_on:
+      - nats_1
+      - nats_streaming_1
 
   worker:
     build:
@@ -101,8 +107,11 @@ services:
       args:
         NODE_ENV: ${ENV}
     image: "${AKA}_worker_lab:${VERSION}"
-    # command: ["npm", "start"]
-    command: ["node", "src/stream.js"]
+    command: >
+      /bin/ash -c "
+        bin/await nats_1:4222 nats_1:6222;
+        node src/stream.js
+      "
     environment:
       - NODE_ENV=${ENV}
       - PORT=${PORT}
@@ -115,6 +124,9 @@ services:
       - ./worker/package.json:/home/node/app/package.json
     networks:
       - net
+    depends_on:
+      - nats_1
+      - nats_streaming_1
 
 networks:
   net:

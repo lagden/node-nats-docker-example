@@ -1,27 +1,25 @@
-#!/usr/bin/env node
+#!/bin/sh
 
-'use strict'
+: ${SLEEP_LENGTH:=2}
+: ${TIMEOUT_LENGTH:=60}
 
-const debug = require('../src/lib/debug')
-const sleep = require('../src/lib/sleep')
-const conn = require('../src/lib/conn')
-
-let cc = 0
-
-function _await() {
-	debug.log('esperando o NATS', cc++)
-	const stan = conn('nats_lab', 'wait_worker')
-	stan
-		.on('connect', sc => {
-			debug.log('connected')
-			sc.close()
-			process.exit()
-		})
-		.on('error', async error => {
-			debug.error(error.message)
-			await sleep(5)
-			_await()
-		})
+wait_for() {
+	START=$(date +%s)
+	echo "Waiting for $1 to listen on $2..."
+	while ! nc -z $1 $2;
+		do
+		if [ $(($(date +%s) - $START)) -gt $TIMEOUT_LENGTH ]; then
+				echo "Service $1:$2 did not start within $TIMEOUT_LENGTH seconds. Aborting..."
+				exit 1
+		fi
+		echo "sleeping"
+		sleep $SLEEP_LENGTH
+	done
 }
 
-_await()
+for var in "$@"
+do
+	host=${var%:*}
+	port=${var#*:}
+	wait_for $host $port
+done
