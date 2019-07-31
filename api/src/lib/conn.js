@@ -14,7 +14,7 @@ function conn(cluster, id, name) {
 		stanPingInterval: 5000,
 		reconnect: true,
 		reconnectTimeWait: 5000,
-		maxReconnectAttempts: -1,
+		maxReconnectAttempts: 3,
 		name: name || `${cluster}_${id}`
 	})
 }

@@ -10,7 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "debug": "4.1.1",
-    "node-nats-streaming": "0.2.2"
+    "node-nats-streaming": "0.2.6"
   },
   "devDependencies": {
     "nodemon": "1.19.1"
@@ -20,7 +20,13 @@
     "rules": {
       "capitalized-comments": 0,
       "padding-line-between-statements": 0,
-      "brace-style": ["error", "1tbs", { "allowSingleLine": true }]
+      "brace-style": [
+        "error",
+        "1tbs",
+        {
+          "allowSingleLine": true
+        }
+      ]
     }
   }
 }

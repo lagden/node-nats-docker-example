@@ -13,7 +13,7 @@
     "koa-app-base": "3.8.0",
     "koa-compose": "4.1.0",
     "koa-router": "7.4.0",
-    "node-nats-streaming": "0.2.2"
+    "node-nats-streaming": "0.2.6"
   },
   "devDependencies": {
     "nodemon": "1.19.1"

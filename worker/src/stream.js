@@ -15,18 +15,20 @@ stan
 			.setDeliverAllAvailable()
 			.setDurableName('nats_lab_sub_durable')
 			.setManualAckMode(true)
+			.setAckWait(5000)
 			.setMaxInFlight(1)
 
 		const subscription = sc.subscribe('nats', 'nats.workers', opts)
 		subscription
 			.on('message', msg => {
 				debug.log('thread request --->', msg.getSubject(), `[${msg.getSequence()}]`, msg.getData())
-				msg.ack()
 
 				// Thread
 				runService(join(__dirname, 'lib', 'doit.js'), {data: msg.getData(), seq: msg.getSequence()})
 					.then(res => {
 						debug.log('thread response --->', res)
+						// Confirma que o dado foi processado
+						msg.ack()
 					})
 					.catch(debug.error)
 			})

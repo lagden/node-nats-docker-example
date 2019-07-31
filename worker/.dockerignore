@@ -3,6 +3,5 @@ node_modules
 docker-compose*.yml
 Dockerfile*
 LICENSE
-package-*.json
 readme.md
 README.md

@@ -6,28 +6,31 @@ const conn = require('../lib/conn')
 
 const router = new Router()
 
-function pub(msg) {
+let _sc
+const stan = conn('nats_lab', 'pub')
+stan
+	.on('connect', sc => {
+		_sc = sc
+		debug.log('connected')
+	})
+	.on('error', error => {
+		debug.error(error)
+	})
+
+async function pub(msg) {
 	return new Promise((resolve, reject) => {
-		const stan = conn('nats_lab', 'pub')
-		stan
-			.on('connect', sc => {
-				debug.log('connected')
-				sc.publish('nats', msg, (error, guid) => {
-					if (error) {
-						debug.error('ackHandler error', error)
-					} else {
-						debug.log('ackHandler ok', guid, msg)
-					}
-					sc.close()
-				})
-			})
-			.on('close', () => {
-				resolve('OK')
-			})
-			.on('error', error => {
-				debug.error(error)
-				reject(new Error('Erro no NATS Stream'))
-			})
+		if (!_sc) {
+			reject(new Error('Nat não conectado'))
+		}
+		_sc.publish('nats', msg, (error, guid) => {
+			if (error) {
+				debug.error('ackHandler error', error)
+				reject(`ackHandler error: ${error.message}`)
+			} else {
+				debug.log('ackHandler ok', guid, msg)
+				resolve(`ackHandler ok: ${guid}`)
+			}
+		})
 	})
 }
 

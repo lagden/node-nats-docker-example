@@ -35,15 +35,14 @@ do
 		## Go to dir
 		cd "${GO_DIR}"
 
-		ok "Building... --> ${build}"
-
 		## Variables
 		TAG_IMAGE_VERSION="${AKA}_${build}_lab:${VERSION}"
+		ok "Building... --> ${TAG_IMAGE_VERSION}"
 
-		ok "Image VERSION    --> ${TAG_IMAGE_VERSION}"
-
-		# ## Build
-		docker build --compress --force-rm --no-cache . --tag $TAG_IMAGE_VERSION
+		## Build
+		docker build \
+			--build-arg VERSION=${VERSION} \
+			--compress --force-rm --no-cache . --tag $TAG_IMAGE_VERSION
 		test $? -ne 0 && abort "Falha no build da image --> ${build}" || ok "Build image ok --> ${build}"
 
 		CC=$((CC+1))
